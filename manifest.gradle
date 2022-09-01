@@ -1,0 +1,4 @@
+ext {
+    composeVersion = "1.2.1"
+    wearComposeVersion = "1.0.1"
+}
