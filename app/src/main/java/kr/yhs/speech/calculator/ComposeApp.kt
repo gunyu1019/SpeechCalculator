@@ -1,6 +1,13 @@
 package kr.yhs.speech.calculator.navigator
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.speech.RecognizerIntent
+import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.runtime.*
@@ -16,6 +23,18 @@ import kr.yhs.speech.calculator.pages.Screen
 fun ComposeApp(activity: ComponentActivity) {
     val navController = rememberSwipeDismissableNavController()
     val coroutineScope = rememberCoroutineScope()
+
+    val intent = rememberLauncherForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+
+            Log.i("Recognizer", "${it.data?.getStringArrayListExtra(
+                RecognizerIntent.EXTRA_RESULTS)}")
+            navController.navigate(Screen.CalculateResult.route)
+        }
+    }
+
     SwipeDismissableNavHost(
         navController = navController,
         startDestination = Screen.SpeechRequire.route
@@ -28,7 +47,10 @@ fun ComposeApp(activity: ComponentActivity) {
                         description = "사칙연산을 시도해보세요!",
                         icon = Icons.Outlined.Calculate
                     ) {
-
+                        val recognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                        }
+                        intent.launch(recognizerIntent)
                     }
                 )
             )
@@ -38,3 +60,5 @@ fun ComposeApp(activity: ComponentActivity) {
         }
     }
 }
+
+
