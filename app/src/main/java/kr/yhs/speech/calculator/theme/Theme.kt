@@ -1,4 +1,4 @@
-package kr.yhs.speech.calculator.ui
+package kr.yhs.speech.calculator.navigator
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.MaterialTheme
