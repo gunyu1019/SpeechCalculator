@@ -1,10 +1,10 @@
 package kr.yhs.speech.calculator.intent
 
 
-val plus = listOf(
-    "더하기", "+", "plus", "+", "sum", "덧셈", "합", "합치기"
+val sum = listOf(
+    "더하기", "+", "plus", "+", "addition", "add", "sum", "덧셈", "합", "합치기"
 )
-val minus = listOf(
+val subtract = listOf(
     "빼기", "-", "minus", "−", "subtract", "subtraction", "뺏셈", "차"
 )
 val multiply = listOf(
