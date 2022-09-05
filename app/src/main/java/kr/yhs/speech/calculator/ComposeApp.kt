@@ -11,11 +11,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.runtime.*
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import androidx.wear.compose.navigation.SwipeDismissableNavHost
 import androidx.wear.compose.navigation.composable
 import androidx.wear.compose.navigation.rememberSwipeDismissableNavController
 import kr.yhs.speech.calculator.pages.HorizontalPagerScreen
 import kr.yhs.speech.calculator.pages.PagerItemScreen
+import kr.yhs.speech.calculator.pages.QUERY
 import kr.yhs.speech.calculator.pages.Screen
 
 
@@ -27,11 +30,10 @@ fun ComposeApp(activity: ComponentActivity) {
     val intent = rememberLauncherForActivityResult(
             ActivityResultContracts.StartActivityForResult()
     ) {
-        if (it.resultCode == RESULT_OK) {
-
-            Log.i("Recognizer", "${it.data?.getStringArrayListExtra(
-                RecognizerIntent.EXTRA_RESULTS)}")
-            navController.navigate(Screen.CalculateResult.route)
+        if (it.resultCode == RESULT_OK && it.data !== null) {
+            navController.navigate(
+                Screen.CalculateResult.route + "?$QUERY=${it.data!!.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)}"
+            )
         }
     }
 
@@ -55,7 +57,10 @@ fun ComposeApp(activity: ComponentActivity) {
                 )
             )
         }
-        composable(Screen.CalculateResult.route) {
+        composable(
+            Screen.CalculateResult.route + "?$QUERY={$QUERY}",
+            listOf(navArgument(QUERY) { type = NavType.StringType })
+        ) {
 
         }
     }
